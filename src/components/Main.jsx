@@ -1,4 +1,5 @@
 import AccordionList from "./AccordionList"
+import Card from "./Card"
 
 const languages = [
     {
@@ -33,20 +34,42 @@ const languages = [
     }
 ];
 
+import { useState } from "react"
+
+
+
 const Main = () => {
+    const [selectedLanguage, setSelectedLanguage] = useState(null)
+
+    const renderLanguage = languages.map((language) => {
+        const active = selectedLanguage === language
+        return (
+            <>
+                <AccordionList key={language.id} isActive={active} title={language.title} onSelect={() => setSelectedLanguage(language)} />
+            </>
+        )
+    })
+
+    const renderSelectedLanguage = () => {
+        if (!selectedLanguage) return <h3>Nessun linguaggio selezionato</h3>
+        const { title, description } = selectedLanguage;
+        return (
+            <Card title={title} text={description} />
+        )
+    }
+
     return (
-        <>
-            <div className="container d-flex p-2">
-                {
-                    languages.map((element) => {
-                        return (
-                            <AccordionList key={element.id} faq={element} />
-                        )
-                    })
-                }
+        <main>
+            <div className="mb-3 container">
+                {renderLanguage}
             </div>
-        </>
+            <div>
+                {renderSelectedLanguage()}
+            </div>
+        </main>
     )
+
+
 }
 
 
